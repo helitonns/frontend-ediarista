@@ -4,6 +4,31 @@ import { PaymentService } from './PaymentService';
 import { ValidationService } from './ValidationService';
 
 export const FormSchemaService = {
+    address() {
+        return yup
+            .object()
+            .shape({
+                endereco: yup.object().shape({
+                    cep: yup
+                        .string()
+                        .test('cep', 'CEP inválido', (value) =>
+                            ValidationService.cep(value)
+                        ),
+                    estado: yup.string(),
+                    cidade: yup.string(),
+                    bairro: yup.string(),
+                    logradouro: yup.string(),
+                    numero: yup.string(),
+                    complemento: yup
+                        .string()
+                        .nullable()
+                        .default(undefined)
+                        .notRequired(),
+                }),
+            })
+            .defined();
+    },
+
     userData() {
         return yup
             .object()
